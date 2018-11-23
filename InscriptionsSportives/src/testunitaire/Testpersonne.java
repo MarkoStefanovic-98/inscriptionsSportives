@@ -11,8 +11,8 @@ public class Testpersonne {
 	private Personne lol2;
 	@Before
 	public void setUp() throws Exception {
-		lol = new Personne(new Inscriptions(), "Duchien", "Robert", "Duchien.Robert@tesfesse.com");
-		lol2 = new Personne(new Inscriptions(), "Duchat", "Patrik", "Duchat.Patrik@tesfesse.com");
+		lol = new Personne(Inscriptions.getInscriptions(), "Duchien", "Robert", "Duchien.Robert@tesfesse.com");
+		lol2 = new Personne(Inscriptions.getInscriptions(), "Duchat", "Patrik", "Duchat.Patrik@tesfesse.com");
 	}
 
 	@Test
