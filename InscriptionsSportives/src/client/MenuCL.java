@@ -231,6 +231,288 @@ public class MenuCL {
                 }
         );
     }
+
+    /*
+     * Menu pour les equipes
+     */
+
+    private Menu EquipeMenu() {
+        Menu menu = new Menu("Menu | Équipes", "Équipes", "e");
+        menu.add( addEquipeOption() );
+        menu.add( displayEquipeOption() );
+        menu.add( manageEquipeMenu() );
+        menu.addBack("b");
+        return menu;
+    }
+
+    private Option displayEquipeOption() { return new Option(
+            "Afficher les équipes", "2",
+            new Action() {
+                @Override
+                public void optionSelected() {
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Inscriptions.getInscriptions().getEquipes());
+                }
+            });
+    }
+
+    private Option addEquipeOption() { return new Option(
+            "Ajouter une équipe", "1",
+            new Action()
+            {
+                @Override
+                public void optionSelected()
+                {
+                    String a = InOut.getString("Nom de l'équipe: ");
+                    Inscriptions.getInscriptions().createEquipe(a);
+                }
+            }
+    ); }
+
+    private Option deleteEquipeOption() {
+        return new List<>(
+                "Supprimer une équipe", "1",
+                new ListData<Equipe>()
+                {
+                    @Override
+                    public java.util.List<Equipe> getList() {
+                        return new ArrayList<>(Inscriptions.getInscriptions().getEquipes());
+                    }
+                },
+                new ListAction<Equipe>()
+                {
+                    @Override
+                    public void itemSelected(int i, Equipe equipe) {
+                        equipe.delete();
+                    }
+
+                }
+        );
+    }
+
+    private Menu manageEquipeMenu() {
+        Menu menu = new Menu("Menu | Gestion des équipes", "Gestion des équipes","3");
+        menu.add( deleteEquipeOption() );
+        menu.add( modifyEquipeOption() );
+        menu.addBack("b");
+        return menu;
+    }
+
+    private Option modifyEquipeOption() {
+        return new List<>(
+                "Modifier une équipe", "2",
+                new ListData<Equipe>(){
+
+                    @Override
+                    public java.util.List<Equipe> getList() {
+                        return new ArrayList<>(Inscriptions.getInscriptions().getEquipes());
+                    }
+                },
+                new ListOption<Equipe>()
+                {
+                    @Override
+                    public Option getOption(Equipe equipe) {
+                        return modifyEquipe(equipe);
+                    }
+                }
+        );
+    }
+
+    private Option modifyEquipe(Equipe equipe) {
+        Menu menu = new Menu("Menu | Modification equipe : " + equipe.getNom());
+        menu.add(changerNomEquipe(equipe));
+        menu.add(addPersonToEquipeOption(equipe));
+        menu.add(removePersonToEquipeOption(equipe));
+        menu.addBack("b");
+
+        return menu;
+    }
+
+    private Option changerNomEquipe(Equipe equipe) {
+        return new Option(
+                "Changer le nom de l'équipe", "1",
+                new Action() {
+                    @Override
+                    public void optionSelected() {
+                        equipe.setNom(InOut.getString("Nouveau nom de l'équipe : "));
+                    }
+                }
+        );
+    }
+
+    private Option addPersonToEquipeOption(Equipe equipe) {
+        return new List<>(
+                "Ajouter une personne à l'équipe", "2",
+                new ListData<Personne>()
+                {
+                    @Override
+                    public java.util.List<Personne> getList() {
+                        return new ArrayList<>(Inscriptions.getInscriptions().getPersonnes());
+                    }
+                },
+                new ListAction<Personne>()
+                {
+                    @Override
+                    public void itemSelected(int i, Personne personne) {
+                        equipe.add(personne);
+                    }
+
+                }
+        );
+    }
+
+    private Option removePersonToEquipeOption(Equipe equipe) {
+        return new List<>(
+                "Supprimer une personne de l'équipe", "3",
+                new ListData<Personne>()
+                {
+                    @Override
+                    public java.util.List<Personne> getList() {
+                        return new ArrayList<>(Inscriptions.getInscriptions().getPersonnes());
+                    }
+                },
+                new ListAction<Personne>()
+                {
+                    @Override
+                    public void itemSelected(int i, Personne personne) {
+                        equipe.remove(personne);
+                    }
+
+                }
+        );
+    }
+    
+    /* Menu pour les personnes */
+
+    private Menu PersonneMenu() {
+        Menu menu = new Menu("Menu | Menu des personnes", "Personnes", "p");
+        menu.add( addPersonneOption() );
+        menu.add( displayPersonneOption() );
+        menu.add( managePersMenu() );
+        menu.addBack("b");
+        return menu;
+    }
+
+    private Option displayPersonneOption() { return new Option(
+            "Afficher les personnes", "2",
+            new Action() {
+                @Override
+                public void optionSelected() {
+                    System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Inscriptions.getInscriptions().getPersonnes());
+                }
+            }
+    );
+    }
+
+    private Option addPersonneOption() {
+        return new Option("Ajouter une personne", "1",
+                new Action() {
+                    @Override
+                    public void optionSelected()
+                    {
+                        String prenom = InOut.getString("Prénom de la personne: ");
+                        String nom = InOut.getString("Nom de la personne: ");
+                        String email = InOut.getString("Adresse e-mail de la personne: ");
+                        Inscriptions.getInscriptions().createPersonne(nom, prenom, email);
+                    }
+                }
+        );
+    }
+
+    private Option deletePersonneOption() {
+        return new List<>(
+                "Supprimer une personne", "1",
+                new ListData<Personne>(){
+
+                    @Override
+                    public java.util.List<Personne> getList() {
+                        return new ArrayList<>(Inscriptions.getInscriptions().getPersonnes());
+                    }
+                },
+                new ListAction<Personne>()
+                {
+                    @Override
+                    public void itemSelected(int i, Personne personne) {
+                        personne.delete();
+                    }
+
+                }
+        );
+    }
+
+    private Menu managePersMenu() {
+        Menu menu = new Menu("Menu | Gestion des personnes", "Gestion des personnes","3");
+        menu.add( deletePersonneOption() );
+        menu.add( modifyPersonneOption() );
+        menu.addBack("b");
+        return menu;
+    }
+
+    private Option modifyPersonneOption() {
+        return new List<>(
+            "Modifier une personne", "2",
+            new ListData<Personne>(){
+
+                @Override
+                public java.util.List<Personne> getList() {
+                    return new ArrayList<>(Inscriptions.getInscriptions().getPersonnes());
+                }
+            },
+            new ListOption<Personne>()
+            {
+                @Override
+                public Option getOption(Personne personne) {
+                    return modifyPersonne(personne);
+                }
+            }
+        );
+    }
+
+    private Option modifyPersonne(Personne personne) {
+        Menu menu = new Menu("Menu | Modifier une personne :  " + personne.getNom());
+        menu.add(changerNom(personne));
+        menu.add(changerPrenom(personne));
+        menu.add(changerMail(personne));
+        menu.addBack("b");
+
+        return menu;
+    }
+
+    private Option changerNom(Personne personne) {
+        return new Option(
+                "Changer le nom", "1",
+                new Action() {
+                    @Override
+                    public void optionSelected() {
+                        personne.setNom(InOut.getString("Nouveau nom : "));
+                    }
+                }
+        );
+    }
+
+    private Option changerPrenom(Personne personne) {
+        return new Option(
+                "Changer le prénom", "2",
+                new Action() {
+                    @Override
+                    public void optionSelected() {
+                        personne.setPrenom(InOut.getString("Nouveau prénom : "));
+                    }
+                }
+        );
+    }
+
+    private Option changerMail(Personne personne) {
+        return new Option(
+                "Changer l'email", "3",
+                new Action() {
+                    @Override
+                    public void optionSelected() {
+                        personne.setMail(InOut.getString("Nouvelle adresse email : "));
+                    }
+                }
+        );
+    }
+    
 }
 
 
